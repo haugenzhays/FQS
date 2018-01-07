@@ -45,7 +45,11 @@ move to "/shadowsocksr/shadowsocks", then run:
 
 Check all the options via `-h`.
 
-You can also use a configuration file instead (recommend), move to "/shadowsocksr" and edit the file "user-config.json", then move to "/shadowsocksr/shadowsocks" again, just run:
+You can also use a configuration file instead (recommend), move to "/shadowsocksr" and edit the file "user-config.json" with `vi` text editor, 
+
+    vi /shadowsocksr/user-config.json
+
+then move to "/shadowsocksr/shadowsocks" again, just run:
 
     python server.py
 
@@ -61,11 +65,15 @@ To monitor the log:
 
     ./tail.sh
 
-If you want the remote host to start the shadowsocksr service automatically when the host started, add the following command to the end of the `/etc/rc.local` file.
+If you hope the remote host to start the shadowsocksr service automatically when the host started, please edit `/etc/rc.local` with `vi` editor,
+
+    vi /etc/rc.local
+
+and add the following command to the end of the `/etc/rc.local` file.
 
     /shadowsocksr/shadowsocks/logrun.sh
 
-About edit `/etc/rc.local` file with `vi` text editor utility, please see [here](https://www.washington.edu/computing/unix/vi.html).
+About editing `/etc/rc.local` file with `vi` text editor utility, please see [How to Use the vi Editor](https://www.washington.edu/computing/unix/vi.html).
 
 
 Client
