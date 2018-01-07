@@ -10,6 +10,10 @@ Server
 
 ### Install
 
+Please change your working directory to the root first.
+
+    cd / 
+
 Debian / Ubuntu:
 
     apt-get install git
@@ -26,22 +30,22 @@ Windows:
 
 ### Usage for single user on linux platform
 
-If you clone it into "\~/shadowsocksr/" folder, 
-please enter "\~/shadowsocksr/" first, 
+If you clone it into "/shadowsocksr" folder, 
+please enter "/shadowsocksr" first, 
 
-    cd ~/shadowsocksr
+    cd /shadowsocksr
 
 then run:
 
     bash initcfg.sh
 
-move to "\~/shadowsocksr/shadowsocks", then run:
+move to "/shadowsocksr/shadowsocks", then run:
 
     python server.py -p 443 -k password -m aes-128-cfb -O auth_aes128_md5 -o tls1.2_ticket_auth_compatible
 
 Check all the options via `-h`.
 
-You can also use a configuration file instead (recommend), move to "\~/shadowsocksr" and edit the file "user-config.json", then move to "\~/shadowsocksr/shadowsocks" again, just run:
+You can also use a configuration file instead (recommend), move to "/shadowsocksr" and edit the file "user-config.json", then move to "/shadowsocksr/shadowsocks" again, just run:
 
     python server.py
 
@@ -56,6 +60,12 @@ To stop:
 To monitor the log:
 
     ./tail.sh
+
+If you want the remote host to start the shadowsocksr service automatically when the host started, add the following command to the end of the `/etc/rc.local` file.
+
+    /shadowsocksr/shadowsocks/logrun.sh
+
+About edit `/etc/rc.local` file with `vi` text editor utility, please see [here](https://www.washington.edu/computing/unix/vi.html).
 
 
 Client
