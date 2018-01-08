@@ -73,7 +73,7 @@ and add the following command to the end of the `/etc/rc.local` file.
 
     /shadowsocksr/shadowsocks/logrun.sh
 
-About editing `/etc/rc.local` file with `vi` text editor utility, please see [How to Use the vi Editor](https://www.washington.edu/computing/unix/vi.html).
+About editing `user-config.json` and `/etc/rc.local` files with `vi` text editor utility, please see [How to Use the vi Editor](https://www.washington.edu/computing/unix/vi.html).
 
 
 Client
