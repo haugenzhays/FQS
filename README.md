@@ -10,8 +10,9 @@ Server
 
 ### Install
 
-Please change your working directory to the root first.
+Please make you as `root` account and change your working directory to the root first.
 
+    sudo su
     cd / 
 
 Debian / Ubuntu:
@@ -72,6 +73,13 @@ If you hope the remote host to start the shadowsocksr service automatically when
 and add the following command to the end of the `/etc/rc.local` file.
 
     /shadowsocksr/shadowsocks/logrun.sh
+    
+If the first line of file `/etc/rc.local` is not `#!/bin/sh -e`, please add it to the first line, 
+then make `/etc/rc.local` executable using the following command:
+
+    chmod +x /etc/rc.local
+    
+Please `reboot` your linux computer and all is done.
 
 About editing `user-config.json` and `/etc/rc.local` files with `vi` text editor utility, please see [How to Use the vi Editor](https://www.washington.edu/computing/unix/vi.html).
 
