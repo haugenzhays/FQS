@@ -4,7 +4,7 @@
 
     "server": "0.0.0.0",
     "server_ipv6": "::",
-    "server_port": 8388,
+    "server_port": 443,
 
     "password": "password",
     "method": "aes-128-ctr",
