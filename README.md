@@ -66,7 +66,7 @@ To monitor the log:
 
     ./tail.sh
 
-### Run as a automatical service
+### Run as an automatical service
 
 If you hope the remote host to start the shadowsocksr service automatically when the host started, please:
 
