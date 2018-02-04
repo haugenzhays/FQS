@@ -66,7 +66,15 @@ To monitor the log:
 
     ./tail.sh
 
-If you hope the remote host to start the shadowsocksr service automatically when the host started, please edit `/etc/rc.local` with `vi` editor,
+### Run as a automatical service
+
+If you hope the remote host to start the shadowsocksr service automatically when the host started, please:
+
+Edit the configuration file "user-config.json" with `vi` text editor, modify it with correct parameters.
+
+    vi /shadowsocksr/user-config.json
+
+Edit `/etc/rc.local` file with `vi` editor,
 
     vi /etc/rc.local
 
