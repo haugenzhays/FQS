@@ -1401,7 +1401,7 @@ class TCPRelay(object):
 
     def handle_event(self, sock, fd, event):
         # handle events and dispatch to handlers
-        handle = False
+        success = False
         if sock:
             logging.log(shell.VERBOSE_LEVEL, 'fd %d %s', fd,
                         eventloop.EVENT_NAMES.get(event, event))
@@ -1409,35 +1409,34 @@ class TCPRelay(object):
             if event & eventloop.POLL_ERR:
                 # TODO
                 raise Exception('server_socket error')
-            handler = None
-            handle = True
+            tcp_handler = None
             try:
                 logging.debug('accept')
-                conn = self._server_socket.accept()
-                handler = TCPRelayHandler(self, self._fd_to_handlers,
-                                self._eventloop, conn[0], self._config,
+                incoming, _ = self._server_socket.accept()
+                tcp_handler = TCPRelayHandler(self, self._fd_to_handlers,
+                                self._eventloop, incoming, self._config,
                                 self._dns_resolver, self._is_local)
-                if handler.stage() == STAGE_DESTROYED:
-                    conn[0].close()
+                if tcp_handler.stage() == STAGE_DESTROYED:
+                    incoming.close()
+                success = True
             except (OSError, IOError) as e:
                 error_no = eventloop.errno_from_exception(e)
-                if error_no in (errno.EAGAIN, errno.EINPROGRESS,
-                                errno.EWOULDBLOCK):
-                    return
+                if error_no in (errno.EAGAIN, errno.EINPROGRESS, errno.EWOULDBLOCK):
+                    success = True
                 else:
                     shell.print_exception(e)
                     if self._config['verbose']:
                         traceback.print_exc()
-                    if handler:
-                        handler.destroy()
+                    if tcp_handler:
+                        tcp_handler.destroy()
         else:
             if sock:
-                handler = self._fd_to_handlers.get(fd, None)
-                if handler:
-                    handle = handler.handle_event(sock, fd, event)
+                tcp_handler = self._fd_to_handlers.get(fd, None)
+                if tcp_handler:
+                    success = tcp_handler.handle_event(sock, fd, event)
                 else:
                     logging.warn('unknown fd')
-                    handle = True
+                    success = True
                     try:
                         self._eventloop.removefd(fd)
                     except Exception as e:
@@ -1445,13 +1444,13 @@ class TCPRelay(object):
                     sock.close()
             else:
                 logging.warn('poll removed fd')
-                handle = True
+                success = True
                 if fd in self._fd_to_handlers:
                     try:
                         del self._fd_to_handlers[fd]
                     except Exception as e:
                         shell.print_exception(e)
-        return handle
+        return success
 
     def handle_periodic(self):
         if self._closed:
@@ -1460,8 +1459,8 @@ class TCPRelay(object):
                 self._server_socket.close()
                 self._server_socket = None
                 logging.info('closed TCP port %d', self._listen_port)
-            for handler in list(self._fd_to_handlers.values()):
-                handler.destroy()
+            for tcp_handler in list(self._fd_to_handlers.values()):
+                tcp_handler.destroy()
         self._sweep_timeout()
 
     def close(self, next_tick=False):
@@ -1472,5 +1471,5 @@ class TCPRelay(object):
                 self._eventloop.remove_periodic(self.handle_periodic)
                 self._eventloop.removefd(self._server_socket_fd)
             self._server_socket.close()
-            for handler in list(self._fd_to_handlers.values()):
-                handler.destroy()
+            for tcp_handler in list(self._fd_to_handlers.values()):
+                tcp_handler.destroy()
