@@ -1,5 +1,7 @@
 *.py[co]
 
+.vscode/
+
 # Packages
 *.egg
 *.egg-info

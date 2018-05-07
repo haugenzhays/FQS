@@ -146,7 +146,7 @@ class TCPRelayHandler(object):
         self._accept_address = local_sock.getsockname()[:2]
         self._user = None
         self._user_id = server._listen_port
-        self._update_tcp_mss(local_sock)
+        self._tcp_mss = self._update_tcp_mss(local_sock)
 
         # TCP Relay works as either sslocal or ssserver
         # if is_local, this is sslocal
@@ -254,14 +254,15 @@ class TCPRelayHandler(object):
         return server, server_port
 
     def _update_tcp_mss(self, local_sock):
-        self._tcp_mss = TCP_MSS
+        result_mss = TCP_MSS
         try:
             tcp_mss = local_sock.getsockopt(socket.SOL_TCP, socket.TCP_MAXSEG)
             if tcp_mss > 500 and tcp_mss <= 1500:
-                self._tcp_mss = tcp_mss
-            logging.debug("TCP MSS = %d" % (self._tcp_mss,))
+                result_mss = tcp_mss
+            logging.debug("TCP MSS = %d" % (result_mss,))
         except:
             pass
+        return result_mss
 
     def _create_encryptor(self, config):
         try:
