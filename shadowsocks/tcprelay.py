@@ -162,8 +162,6 @@ class TCPRelayHandler(object):
         server_info.port = server._listen_port
         #server_info.users = server.server_users
         #server_info.update_user_func = self._update_user
-        server_info.client = self._client_address[0]
-        server_info.client_port = self._client_address[1]
         server_info.protocol_param = ''
         server_info.obfs_param = config['obfs_param']
         server_info.iv = self._encryptor.cipher_iv
@@ -266,8 +264,7 @@ class TCPRelayHandler(object):
 
     def _create_encryptor(self, config):
         try:
-            self._encryptor = encrypt.Encryptor(config['password'],
-                                                config['method'])
+            self._encryptor = encrypt.Encryptor(config['password'], config['method'])
             return True
         except Exception:
             self._stage = STAGE_DESTROYED
@@ -596,8 +593,7 @@ class TCPRelayHandler(object):
                     else:
                         header = b'\x05\x00\x00\x01'
                     addr, port = self._local_sock.getsockname()[:2]
-                    addr_to_send = socket.inet_pton(self._local_sock.family,
-                                                    addr)
+                    addr_to_send = socket.inet_pton(self._local_sock.family, addr)
                     port_to_send = struct.pack('>H', port)
                     self._write_to_sock(header + addr_to_send + port_to_send,
                                         self._local_sock)
