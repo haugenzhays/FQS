@@ -919,8 +919,7 @@ class TCPRelayHandler(object):
             self._stage = STAGE_ADDR
         elif self._stage == STAGE_CONNECTING:
             self._handle_stage_connecting(data)
-        elif (is_local and self._stage == STAGE_ADDR) or \
-                (not is_local and self._stage == STAGE_INIT):
+        elif (is_local and self._stage == STAGE_ADDR) or (not is_local and self._stage == STAGE_INIT):
             self._handle_stage_addr(ogn_data, data)
 
     def _on_remote_read(self, is_remote_sock):
