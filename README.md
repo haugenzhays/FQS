@@ -18,6 +18,10 @@ chmod +x ssr-install.sh
 
 ./ssr-install.sh 2>&1 | tee ssr-install.log
 ```
+To uninstall, using
+```
+./ssr-install.sh uninstall
+```
 
 ### Install
 
