@@ -8,11 +8,11 @@ A fast tunnel proxy that helps you bypass firewalls.
 Server
 ------
 
-### Install simply
+### Install with one click (一键安装)
 ```
 sudo su
 
-wget --no-check-certificate https://raw.githubusercontent.com/ShadowsocksR-Live/shadowsocksr/master/ssr-install.sh
+wget --no-check-certificate https://raw.githubusercontent.com/ShadowsocksR-Live/shadowsocksr/manyuser/ssr-install.sh
 
 chmod +x ssr-install.sh
 
