@@ -13,7 +13,7 @@
 ### END INIT INFO
 
 NAME=ShadowsocksR
-DAEMON=/usr/local/ssr/server.py
+DAEMON=/usr/local/shadowsocks/server.py
 if [ -f /etc/ssr/config.json ]; then
     CONF=/etc/ssr/config.json
 elif [ -f /etc/ssr.json ]; then
