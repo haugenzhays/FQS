@@ -11,11 +11,11 @@
 ### END INIT INFO
 
 NAME=ShadowsocksR
-DAEMON=/usr/local/shadowsocks/server.py
-if [ -f /etc/shadowsocks-r/config.json ]; then
-    CONF=/etc/shadowsocks-r/config.json
-elif [ -f /etc/shadowsocks.json ]; then
-    CONF=/etc/shadowsocks.json
+DAEMON=/usr/local/ssr/server.py
+if [ -f /etc/ssr/config.json ]; then
+    CONF=/etc/ssr/config.json
+elif [ -f /etc/ssr.json ]; then
+    CONF=/etc/ssr.json
 fi
 RETVAL=0
 

@@ -324,12 +324,12 @@ download_files(){
     fi
     # Download ShadowsocksR init script
     if check_sys packageManager yum; then
-        if ! wget --no-check-certificate https://raw.githubusercontent.com/ShadowsocksR-Live/shadowsocksr/manyuser/ssr-svc-01 -O /etc/init.d/shadowsocks; then
+        if ! wget --no-check-certificate https://raw.githubusercontent.com/ShadowsocksR-Live/shadowsocksr/manyuser/ssr-svc-yum -O /etc/init.d/ssr; then
             echo -e "[${red}Error${plain}] Failed to download ShadowsocksR chkconfig file!"
             exit 1
         fi
     elif check_sys packageManager apt; then
-        if ! wget --no-check-certificate https://raw.githubusercontent.com/ShadowsocksR-Live/shadowsocksr/manyuser/ssr-svc-02 -O /etc/init.d/shadowsocks; then
+        if ! wget --no-check-certificate https://raw.githubusercontent.com/ShadowsocksR-Live/shadowsocksr/manyuser/ssr-svc-apt -O /etc/init.d/ssr; then
             echo -e "[${red}Error${plain}] Failed to download ShadowsocksR chkconfig file!"
             exit 1
         fi
@@ -369,8 +369,8 @@ firewall_set(){
 }
 
 # Config ShadowsocksR
-config_shadowsocks(){
-    cat > /etc/shadowsocks.json<<-EOF
+config_shadowsocksr(){
+    cat > /etc/ssr.json<<-EOF
 {
     "server":"0.0.0.0",
     "server_ipv6":"[::]",
@@ -412,15 +412,16 @@ install(){
     cd ${cur_dir}
     tar zxf ${shadowsocks_r_file}.tar.gz
     mv ${shadowsocks_r_file}/shadowsocks /usr/local/
-    if [ -f /usr/local/shadowsocks/server.py ]; then
-        chmod +x /etc/init.d/shadowsocks
+    mv /usr/local/shadowsocks /usr/local/ssr
+    if [ -f /usr/local/ssr/server.py ]; then
+        chmod +x /etc/init.d/ssr
         if check_sys packageManager yum; then
-            chkconfig --add shadowsocks
-            chkconfig shadowsocks on
+            chkconfig --add ssr
+            chkconfig ssr on
         elif check_sys packageManager apt; then
-            update-rc.d -f shadowsocks defaults
+            update-rc.d -f ssr defaults
         fi
-        /etc/init.d/shadowsocks start
+        /etc/init.d/ssr start
 
         clear
         echo
@@ -455,19 +456,19 @@ uninstall_shadowsocksr(){
     read -p "(Default: n):" answer
     [ -z ${answer} ] && answer="n"
     if [ "${answer}" == "y" ] || [ "${answer}" == "Y" ]; then
-        /etc/init.d/shadowsocks status > /dev/null 2>&1
+        /etc/init.d/ssr status > /dev/null 2>&1
         if [ $? -eq 0 ]; then
-            /etc/init.d/shadowsocks stop
+            /etc/init.d/ssr stop
         fi
         if check_sys packageManager yum; then
-            chkconfig --del shadowsocks
+            chkconfig --del ssr
         elif check_sys packageManager apt; then
-            update-rc.d -f shadowsocks remove
+            update-rc.d -f ssr remove
         fi
-        rm -f /etc/shadowsocks.json
-        rm -f /etc/init.d/shadowsocks
-        rm -f /var/log/shadowsocks.log
-        rm -rf /usr/local/shadowsocks
+        rm -f /etc/ssr.json
+        rm -f /etc/init.d/ssr
+        rm -f /var/log/ssr.log
+        rm -rf /usr/local/ssr
         echo "ShadowsocksR uninstall success!"
     else
         echo
@@ -481,7 +482,7 @@ install_shadowsocksr(){
     disable_selinux
     pre_install
     download_files
-    config_shadowsocks
+    config_shadowsocksr
     if check_sys packageManager yum; then
         firewall_set
     fi
