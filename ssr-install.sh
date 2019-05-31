@@ -411,8 +411,9 @@ install(){
     # Install ShadowsocksR
     cd ${cur_dir}
     tar zxf ${shadowsocks_r_file}.tar.gz
-    mv ${shadowsocks_r_file}/shadowsocks /usr/local/
-    if [ -f /usr/local/shadowsocks/server.py ]; then
+    mkdir /usr/local/ssr
+    mv ${shadowsocks_r_file}/shadowsocks /usr/local/ssr/
+    if [ -f /usr/local/ssr/shadowsocks/server.py ]; then
         chmod +x /etc/init.d/ssr
         if check_sys packageManager yum; then
             chkconfig --add ssr
@@ -467,7 +468,7 @@ uninstall_shadowsocksr(){
         rm -f /etc/ssr.json
         rm -f /etc/init.d/ssr
         rm -f /var/log/shadowsocksr.log
-        rm -rf /usr/local/shadowsocks
+        rm -rf /usr/local/ssr
         echo "ShadowsocksR uninstall success!"
     else
         echo
