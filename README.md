@@ -8,7 +8,7 @@ A fast tunnel proxy that helps you bypass firewalls.
 Server
 ------
 
-### Install with one click (一键安装)
+### Install with one click
 ```
 sudo su
 
